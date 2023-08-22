@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pars.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olivierboucher <olivierboucher@student.    +#+  +:+       +#+        */
+/*   By: oboucher <oboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 19:37:37 by olivierbouc       #+#    #+#             */
-/*   Updated: 2023/08/22 11:33:34 by olivierbouc      ###   ########.fr       */
+/*   Updated: 2023/08/22 15:25:53 by oboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ bool	pars(char **av)
 			data()->time_to_eat = ft_atoi(av[i]);
 		else if (i == 4)
 			data()->time_to_sleep = ft_atoi(av[i]);
+		else if (i == 5)
+			data()->max_eat = ft_atoi(av[i]);
 		i++;
 	}
 	return (true);

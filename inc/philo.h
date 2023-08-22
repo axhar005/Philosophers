@@ -5,14 +5,14 @@
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/time.h>
 # include <unistd.h>
-#include <sys/time.h>
 
 # define INIT 0
 # define DEL 1
 
 # define FORK "has taken a fork"
-# define EATINT "is eating"
+# define EATING "is eating"
 # define SLEEPING "is sleeping"
 # define THINKING "is thinking"
 # define DIED "died"
@@ -29,6 +29,7 @@ typedef struct s_mutex
 typedef struct s_philo
 {
 	pthread_mutex_t		fork;
+	pthread_mutex_t		mate_fork;
 	pthread_t			thread;
 	size_t				id;
 	size_t				eat_number;
@@ -55,6 +56,7 @@ t_data					*data(void);
 int						ft_atoi(const char *str);
 t_time					get_time(void);
 void					*routine(void *param);
+void					print_state(size_t philo_id, char *str);
 
 //init
 
@@ -62,5 +64,10 @@ void					join_philo(void);
 void					create_philo(void);
 void					init_mutex(int action);
 void					init_philo(void);
+
+//checks
+
+bool					check_one_death(void);
+bool					check_all_dead(void);
 
 #endif

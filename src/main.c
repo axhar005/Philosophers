@@ -6,7 +6,7 @@
 /*   By: oboucher <oboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 13:14:21 by oboucher          #+#    #+#             */
-/*   Updated: 2023/08/22 14:30:05 by oboucher         ###   ########.fr       */
+/*   Updated: 2023/08/22 15:56:01 by oboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,40 +34,28 @@ t_time    get_time(void)
 void    print_state(size_t philo_id, char *str)
 {
     pthread_mutex_lock(&data()->mutex.print);
-    printf("%lld %zu %s\n", get_time(), philo_id, str);
+    if (!check_one_death())
+        printf("%lld %zu %s\n", get_time(), philo_id, str);
     pthread_mutex_unlock(&data()->mutex.print);
 }
 
-bool check_one_death()
+void    check_eat(t_philo *philo)
 {
-    pthread_mutex_lock(&data()->mutex.death);
-    if (data()->death == true)
+    if (!check_all_dead())
     {
-        pthread_mutex_unlock(&data()->mutex.death);
-        return (true);
+        pthread_mutex_lock(&philo->fork);
+        if (!check_one_death())
+            print_state(philo->id, FORK);
+        pthread_mutex_lock(&philo->mate_fork);
+        if (!check_one_death())
+            print_state(philo->id, FORK);
+        if (!check_one_death())
+            print_state(philo->id, EATING);
+        if (!check_one_death())
+            philo->last_eat = get_time();
+        pthread_mutex_unlock(&philo->fork);
+        pthread_mutex_unlock(&philo->mate_fork);
     }
-    pthread_mutex_unlock(&data()->mutex.death);
-    return (false);
-}
-
-bool check_all_dead(void)
-{
-    size_t i;
-
-    i = 0;
-    pthread_mutex_lock(&data()->mutex.dead);
-    while (i < data()->number_of_philo)
-    {
-        if (get_time() - data()->philo[i].last_eat > data()->time_to_die)
-        {
-            print_state(i, DIED);
-            data()->death = true;
-            return (true);
-        }
-        i++;
-    }
-    pthread_mutex_unlock(&data()->mutex.dead);
-    return (false);
 }
 
 void *routine(void *param)
@@ -80,14 +68,13 @@ void *routine(void *param)
     while (!check_one_death())
     {
         print_state(philo->id, THINKING);
-        //eat
+        if (!check_one_death())
+            check_eat(philo);
         //max eat
         //sleep
     }
     return(NULL);
 }
-
-
 
 int main(int ac, char **av)
 {

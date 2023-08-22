@@ -6,7 +6,7 @@
 /*   By: oboucher <oboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 13:28:12 by oboucher          #+#    #+#             */
-/*   Updated: 2023/08/22 13:44:12 by oboucher         ###   ########.fr       */
+/*   Updated: 2023/08/22 15:28:39 by oboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,11 @@ void init_philo(void)
 	{
         data()->philo[i].id = i;
         data()->philo[i].last_eat = get_time();
+		data()->philo[i].eat_number = data()->max_eat;
+		if (i != data()->number_of_philo)
+			data()->philo[i].mate_fork = data()->philo[i + 1].fork;
+		else
+			data()->philo[i].mate_fork = data()->philo[1].fork;
 		i++;
 	}
 }
