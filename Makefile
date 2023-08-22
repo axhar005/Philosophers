@@ -18,7 +18,7 @@ INCDIR = inc
 
 #--- SOURCE ---#
 SRCDIR	=	src
-SRC		= 	main.c pars.c utils.c
+SRC		= 	main.c pars.c utils.c init.c
 VPATH	=	$(SRCDIR)
 
 #--- OBJECT ---#
