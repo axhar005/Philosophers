@@ -6,7 +6,7 @@
 /*   By: oboucher <oboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 13:14:21 by oboucher          #+#    #+#             */
-/*   Updated: 2023/08/23 17:55:51 by oboucher         ###   ########.fr       */
+/*   Updated: 2023/08/23 18:13:28 by oboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,17 @@ void    print_state(size_t philo_id, char *str)
 
 void    check_eat(t_philo *philo)
 {
-    if (!check_all_dead(philo))
+    if (!check_all_dead(philo) && !data()->only_the_one)
     {
-        // if (!data()->only_the_one)
-        // {
-            pthread_mutex_lock(&philo->fork);
-            print_state(philo->id, FORK);
-            pthread_mutex_lock(philo->mate_fork);
-            print_state(philo->id, FORK);
-            print_state(philo->id, EATING);
-            msleep(data()->time_to_eat, philo);
-            pthread_mutex_lock(&data()->mutex.last_eat);
-            philo->last_eat = get_time();
-            pthread_mutex_unlock(&data()->mutex.last_eat);
-            pthread_mutex_unlock(&philo->fork);
-            pthread_mutex_unlock(philo->mate_fork);
-        // }
+        pthread_mutex_lock(&philo->fork);
+        print_state(philo->id, FORK);
+        pthread_mutex_lock(philo->mate_fork);
+        print_state(philo->id, FORK);
+        print_state(philo->id, EATING);
+        msleep(data()->time_to_eat, philo);
+        philo->last_eat = get_time();
+        pthread_mutex_unlock(&philo->fork);
+        pthread_mutex_unlock(philo->mate_fork);
     }
 }
 
@@ -97,10 +92,10 @@ void *routine(void *param)
         print_state(philo->id, THINKING);
         if (!check_one_death())
             check_eat(philo);
-        // if (philo->eat_number > 0 && data()->limited_eat)
-        //     philo->eat_number--;
-        // if (philo->eat_number == 0 && data()->limited_eat)
-        //     break ;
+        if (philo->eat_number > 0 && data()->limited_eat)
+            philo->eat_number--;
+        if (philo->eat_number == 0 && data()->limited_eat)
+            break ;
         if (!check_one_death())
         {
             print_state(philo->id, SLEEPING);

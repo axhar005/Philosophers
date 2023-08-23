@@ -6,7 +6,7 @@
 /*   By: oboucher <oboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 13:28:12 by oboucher          #+#    #+#             */
-/*   Updated: 2023/08/23 17:21:44 by oboucher         ###   ########.fr       */
+/*   Updated: 2023/08/23 17:57:37 by oboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ void init_philo(void)
 {
     size_t i;
 	i = 1;
-	// if (data()->max_eat > 0)
-	// 		data()->limited_eat = true;
-	// if (data()->number_of_philo == 1)
-	// 	data()->only_the_one = true;
+	if (data()->max_eat > 0)
+			data()->limited_eat = true;
+	if (data()->number_of_philo == 1)
+		data()->only_the_one = true;
 	while(i <= data()->number_of_philo)
 	{
         data()->philo[i].id = i;
