@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olivierboucher <olivierboucher@student.    +#+  +:+       +#+        */
+/*   By: oboucher <oboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 15:22:11 by oboucher          #+#    #+#             */
-/*   Updated: 2023/08/23 09:30:11 by olivierbouc      ###   ########.fr       */
+/*   Updated: 2023/08/23 16:39:05 by oboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,18 @@ bool check_one_death(void)
     return (false);
 }
 
-bool check_all_dead(void)
+bool check_all_dead(t_philo *philo)
 {
-    size_t i;
-
-    i = 1;
     pthread_mutex_lock(&data()->mutex.death);
-    while (i < data()->number_of_philo)
+    if (get_time() - philo->last_eat > data()->time_to_die)
     {
-        if (get_time() - data()->philo[i].last_eat > data()->time_to_die)
-        {
-            print_state(i, DIED);
-            data()->death = true;
-            pthread_mutex_unlock(&data()->mutex.death);
-            return (true);
-        }
-        i++;
+        pthread_mutex_lock(&data()->mutex.print);
+        if (data()->death == false)
+            printf("%lld %zu %s\n", get_time(), philo->id, DIED);
+        pthread_mutex_unlock(&data()->mutex.print);
+        data()->death = true;
+        pthread_mutex_unlock(&data()->mutex.death);
+        return (true);
     }
     pthread_mutex_unlock(&data()->mutex.death);
     return (false);

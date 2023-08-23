@@ -23,17 +23,16 @@ typedef struct s_mutex
 {
 	pthread_mutex_t		print;
 	pthread_mutex_t		death;
-	pthread_mutex_t		dead;
 	pthread_mutex_t		last_eat;
 }						t_mutex;
 
 typedef struct s_philo
 {
 	pthread_mutex_t		fork;
-	pthread_mutex_t		mate_fork;
+	pthread_mutex_t		*mate_fork;
 	pthread_t			thread;
 	size_t				id;
-	size_t				eat_number;
+	int					eat_number;
 	t_time				last_eat;
 
 }						t_philo;
@@ -46,7 +45,9 @@ typedef struct s_data
 	t_time				time_to_sleep;
 	size_t				max_eat;
 	bool				death;
-	t_philo				philo[200];
+	bool				limited_eat;
+	bool				only_the_one;
+	t_philo				philo[300];
 	t_mutex				mutex;
 }						t_data;
 
@@ -58,6 +59,7 @@ int						ft_atoi(const char *str);
 t_time					get_time(void);
 void					*routine(void *param);
 void					print_state(size_t philo_id, char *str);
+void					msleep(t_time duration, t_philo *philo);
 
 //init
 
@@ -69,6 +71,6 @@ void					init_philo(void);
 //checks
 
 bool					check_one_death(void);
-bool					check_all_dead(void);
+bool					check_all_dead(t_philo *philo);
 
 #endif

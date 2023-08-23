@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olivierboucher <olivierboucher@student.    +#+  +:+       +#+        */
+/*   By: oboucher <oboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 13:14:21 by oboucher          #+#    #+#             */
-/*   Updated: 2023/08/23 09:37:44 by olivierbouc      ###   ########.fr       */
+/*   Updated: 2023/08/23 17:55:51 by oboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,31 @@ t_data	*data(void)
 	static t_data	dt;
 
 	return (&dt);
+}
+
+void msleep(t_time duration, t_philo *philo)
+{
+    t_time start;
+
+    (void)philo;
+    start = get_time();
+    if (philo->last_eat < duration + start && !check_one_death() && philo->last_eat > start)
+    {
+        usleep((philo->last_eat - start) * 1000);
+		check_all_dead(philo);
+    }
+    else
+    {
+        while (get_time() < duration + start)
+			usleep(150);
+        // while(true)
+        // {
+        //     if (get_time() - start >= duration || check_one_death())
+        //         break;
+        //     else    
+        //         usleep(200);
+        // }
+    }
 }
 
 t_time    get_time(void)
@@ -41,20 +66,22 @@ void    print_state(size_t philo_id, char *str)
 
 void    check_eat(t_philo *philo)
 {
-    usleep(200);
-    if (!check_all_dead())
+    if (!check_all_dead(philo))
     {
-        pthread_mutex_lock(&philo->fork);
-        print_state(philo->id, FORK);
-        pthread_mutex_lock(&philo->mate_fork);
-        print_state(philo->id, FORK);
-        print_state(philo->id, EATING);
-        pthread_mutex_lock(&data()->mutex.last_eat);
-        philo->last_eat = get_time();
-        pthread_mutex_unlock(&data()->mutex.last_eat);
-        usleep(data()->time_to_eat * 1000);
-        pthread_mutex_unlock(&philo->fork);
-        pthread_mutex_unlock(&philo->mate_fork);
+        // if (!data()->only_the_one)
+        // {
+            pthread_mutex_lock(&philo->fork);
+            print_state(philo->id, FORK);
+            pthread_mutex_lock(philo->mate_fork);
+            print_state(philo->id, FORK);
+            print_state(philo->id, EATING);
+            msleep(data()->time_to_eat, philo);
+            pthread_mutex_lock(&data()->mutex.last_eat);
+            philo->last_eat = get_time();
+            pthread_mutex_unlock(&data()->mutex.last_eat);
+            pthread_mutex_unlock(&philo->fork);
+            pthread_mutex_unlock(philo->mate_fork);
+        // }
     }
 }
 
@@ -64,15 +91,21 @@ void *routine(void *param)
     
     philo = (t_philo *)param;
     if (philo->id % 2 == 0)
-        usleep(1500);
+        msleep(10, philo);
     while (!check_one_death())
     {
         print_state(philo->id, THINKING);
         if (!check_one_death())
             check_eat(philo);
-        //max eat
+        // if (philo->eat_number > 0 && data()->limited_eat)
+        //     philo->eat_number--;
+        // if (philo->eat_number == 0 && data()->limited_eat)
+        //     break ;
         if (!check_one_death())
-            usleep(data()->time_to_sleep  * 1000);
+        {
+            print_state(philo->id, SLEEPING);
+            msleep(data()->time_to_sleep, philo);
+        }
     }
     return(NULL);
 }

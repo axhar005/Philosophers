@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olivierboucher <olivierboucher@student.    +#+  +:+       +#+        */
+/*   By: oboucher <oboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 13:28:12 by oboucher          #+#    #+#             */
-/*   Updated: 2023/08/22 19:47:38 by olivierbouc      ###   ########.fr       */
+/*   Updated: 2023/08/23 17:21:44 by oboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ void init_mutex(int action)
     size_t i;
     
     i = 1;
-	pthread_mutex_init(&data()->mutex.dead, NULL);
 	pthread_mutex_init(&data()->mutex.death, NULL);
 	pthread_mutex_init(&data()->mutex.print, NULL);
+	pthread_mutex_init(&data()->mutex.last_eat, NULL);
     while(i <= data()->number_of_philo)
     {
         if (action == INIT)
@@ -60,15 +60,19 @@ void init_philo(void)
 {
     size_t i;
 	i = 1;
+	// if (data()->max_eat > 0)
+	// 		data()->limited_eat = true;
+	// if (data()->number_of_philo == 1)
+	// 	data()->only_the_one = true;
 	while(i <= data()->number_of_philo)
 	{
         data()->philo[i].id = i;
         data()->philo[i].last_eat = get_time();
 		data()->philo[i].eat_number = data()->max_eat;
 		if (i != data()->number_of_philo)
-			data()->philo[i].mate_fork = data()->philo[i + 1].fork;
+			data()->philo[i].mate_fork = &data()->philo[i + 1].fork;
 		else
-			data()->philo[i].mate_fork = data()->philo[1].fork;
+			data()->philo[i].mate_fork = &data()->philo[1].fork;
 		i++;
 	}
 }
