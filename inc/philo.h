@@ -24,6 +24,7 @@ typedef struct s_mutex
 	pthread_mutex_t		print;
 	pthread_mutex_t		death;
 	pthread_mutex_t		dead;
+	pthread_mutex_t		last_eat;
 }						t_mutex;
 
 typedef struct s_philo

@@ -6,7 +6,7 @@
 /*   By: olivierboucher <olivierboucher@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 15:22:11 by oboucher          #+#    #+#             */
-/*   Updated: 2023/08/22 23:27:56 by olivierbouc      ###   ########.fr       */
+/*   Updated: 2023/08/23 09:30:11 by olivierbouc      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,10 @@ bool check_all_dead(void)
     {
         if (get_time() - data()->philo[i].last_eat > data()->time_to_die)
         {
-            if (data()->death == false)
-            {
-                print_state(i, DIED);
-                data()->death = true;
-                pthread_mutex_unlock(&data()->mutex.death);
-                return (true);
-            }
+            print_state(i, DIED);
+            data()->death = true;
+            pthread_mutex_unlock(&data()->mutex.death);
+            return (true);
         }
         i++;
     }
