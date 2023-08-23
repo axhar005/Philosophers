@@ -6,7 +6,7 @@
 /*   By: oboucher <oboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 13:14:21 by oboucher          #+#    #+#             */
-/*   Updated: 2023/08/23 18:13:28 by oboucher         ###   ########.fr       */
+/*   Updated: 2023/08/23 18:29:28 by oboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void msleep(t_time duration, t_philo *philo)
 {
     t_time start;
 
-    (void)philo;
     start = get_time();
     if (philo->last_eat < duration + start && !check_one_death() && philo->last_eat > start)
     {
@@ -33,14 +32,7 @@ void msleep(t_time duration, t_philo *philo)
     else
     {
         while (get_time() < duration + start)
-			usleep(150);
-        // while(true)
-        // {
-        //     if (get_time() - start >= duration || check_one_death())
-        //         break;
-        //     else    
-        //         usleep(200);
-        // }
+			usleep(1000); //150
     }
 }
 
@@ -73,8 +65,8 @@ void    check_eat(t_philo *philo)
         pthread_mutex_lock(philo->mate_fork);
         print_state(philo->id, FORK);
         print_state(philo->id, EATING);
-        msleep(data()->time_to_eat, philo);
         philo->last_eat = get_time();
+        msleep(data()->time_to_eat, philo);
         pthread_mutex_unlock(&philo->fork);
         pthread_mutex_unlock(philo->mate_fork);
     }
