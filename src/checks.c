@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oboucher <oboucher@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olivierboucher <olivierboucher@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 15:22:11 by oboucher          #+#    #+#             */
-/*   Updated: 2023/08/22 15:51:40 by oboucher         ###   ########.fr       */
+/*   Updated: 2023/08/22 23:27:56 by olivierbouc      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,22 @@ bool check_all_dead(void)
 {
     size_t i;
 
-    i = 0;
-    pthread_mutex_lock(&data()->mutex.dead);
+    i = 1;
+    pthread_mutex_lock(&data()->mutex.death);
     while (i < data()->number_of_philo)
     {
         if (get_time() - data()->philo[i].last_eat > data()->time_to_die)
         {
-            if (!check_one_death())
+            if (data()->death == false)
+            {
                 print_state(i, DIED);
-            if (!check_one_death())
                 data()->death = true;
-            return (true);
+                pthread_mutex_unlock(&data()->mutex.death);
+                return (true);
+            }
         }
         i++;
     }
-    pthread_mutex_unlock(&data()->mutex.dead);
+    pthread_mutex_unlock(&data()->mutex.death);
     return (false);
 }

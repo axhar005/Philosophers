@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oboucher <oboucher@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olivierboucher <olivierboucher@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 13:28:12 by oboucher          #+#    #+#             */
-/*   Updated: 2023/08/22 15:28:39 by oboucher         ###   ########.fr       */
+/*   Updated: 2023/08/22 19:47:38 by olivierbouc      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@ void init_mutex(int action)
     size_t i;
     
     i = 1;
+	pthread_mutex_init(&data()->mutex.dead, NULL);
+	pthread_mutex_init(&data()->mutex.death, NULL);
+	pthread_mutex_init(&data()->mutex.print, NULL);
     while(i <= data()->number_of_philo)
     {
         if (action == INIT)

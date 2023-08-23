@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oboucher <oboucher@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olivierboucher <olivierboucher@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 13:14:21 by oboucher          #+#    #+#             */
-/*   Updated: 2023/08/22 15:56:01 by oboucher         ###   ########.fr       */
+/*   Updated: 2023/08/22 23:10:45 by olivierbouc      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,16 @@ void    print_state(size_t philo_id, char *str)
 
 void    check_eat(t_philo *philo)
 {
-    if (!check_all_dead())
+    if (!check_one_death())
     {
         pthread_mutex_lock(&philo->fork);
-        if (!check_one_death())
-            print_state(philo->id, FORK);
+        print_state(philo->id, FORK);
         pthread_mutex_lock(&philo->mate_fork);
-        if (!check_one_death())
-            print_state(philo->id, FORK);
-        if (!check_one_death())
-            print_state(philo->id, EATING);
+        print_state(philo->id, FORK);
+        print_state(philo->id, EATING);
         if (!check_one_death())
             philo->last_eat = get_time();
+        usleep(data()->time_to_eat * 1000);
         pthread_mutex_unlock(&philo->fork);
         pthread_mutex_unlock(&philo->mate_fork);
     }
@@ -64,14 +62,14 @@ void *routine(void *param)
     
     philo = (t_philo *)param;
     if (philo->id % 2 == 0)
-        usleep(1000);
+        usleep(1500);
     while (!check_one_death())
     {
         print_state(philo->id, THINKING);
         if (!check_one_death())
             check_eat(philo);
         //max eat
-        //sleep
+        usleep(data()->time_to_sleep  * 1000);
     }
     return(NULL);
 }
@@ -88,6 +86,11 @@ int main(int ac, char **av)
             init_philo();
             create_philo();
             join_philo();
+            while (!data()->death)
+            {
+                check_all_dead();
+                usleep(200);
+            }
         }
     }
     else
