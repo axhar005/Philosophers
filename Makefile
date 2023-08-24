@@ -18,7 +18,7 @@ INCDIR = inc
 
 #--- SOURCE ---#
 SRCDIR	=	src
-SRC		= 	main.c pars.c utils.c init.c checks.c ft_atoli.c
+SRC		= 	main.c pars.c utils.c init.c checks.c utils_2.c
 VPATH	=	$(SRCDIR)
 
 #--- OBJECT ---#
