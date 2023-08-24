@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oboucher <oboucher@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/24 15:28:18 by oboucher          #+#    #+#             */
+/*   Updated: 2023/08/24 15:28:20 by oboucher         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
 # define PHILO_H
 
@@ -20,17 +32,24 @@
 
 typedef long long int	t_time;
 
+typedef struct s_fork
+{
+	pthread_mutex_t		fork;
+	bool				lock;
+}						t_fork;
+
 typedef struct s_mutex
 {
 	pthread_mutex_t		print;
 	pthread_mutex_t		death;
 	pthread_mutex_t		last_eat;
+	pthread_mutex_t		fork;
 }						t_mutex;
 
 typedef struct s_philo
 {
-	pthread_mutex_t		fork;
-	pthread_mutex_t		*mate_fork;
+	t_fork				my;
+	t_fork				*mate;
 	pthread_t			thread;
 	size_t				id;
 	int					eat_number;
@@ -48,13 +67,13 @@ typedef struct s_data
 	bool				death;
 	bool				limited_eat;
 	bool				only_the_one;
-	t_philo				philo[300];
+	t_philo				philo[200];
 	t_mutex				mutex;
 }						t_data;
 
 size_t					ft_strlen(const char *str);
 int						find_filter(char *str, char *filter);
-bool					pars(char **av);
+bool					pars(int ac, char **av);
 t_data					*data(void);
 int						ft_atoi(const char *str);
 t_time					get_time(void);
@@ -62,6 +81,9 @@ void					*routine(void *param);
 void					print_state(size_t philo_id, char *str);
 void					msleep(t_time duration, t_philo *philo);
 long int				ft_atoli(const char *str);
+bool					check_key(t_philo *philo);
+int						ft_isspace(int c);
+int						ft_isdigit(int c);
 
 // init
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pars.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olivierboucher <olivierboucher@student.    +#+  +:+       +#+        */
+/*   By: oboucher <oboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 19:37:37 by olivierbouc       #+#    #+#             */
-/*   Updated: 2023/08/24 09:28:10 by olivierbouc      ###   ########.fr       */
+/*   Updated: 2023/08/24 15:28:52 by oboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,13 @@ int	find_filter(char *str, char *filter)
 	return (0);
 }
 
-bool	pars(char **av)
+bool	pars(int ac, char **av)
 {
-	int i;
+	int	i;
 
 	i = 1;
-
+	if (ac != 6)
+		data()->max_eat = -1;
 	while (av[i])
 	{
 		if (ft_atoli(av[i]) > INT_MAX)

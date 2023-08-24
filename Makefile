@@ -3,7 +3,7 @@ NAME = philo
 
 #--- COMMAND VARIABLES ---#
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -pthread #-fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -pthread #-fsanitize=thread -g 
 RM = rm -f
 AR = ar rcs
 MK = mkdir -p
@@ -18,7 +18,7 @@ INCDIR = inc
 
 #--- SOURCE ---#
 SRCDIR	=	src
-SRC		= 	main.c pars.c utils.c init.c checks.c
+SRC		= 	main.c pars.c utils.c init.c checks.c ft_atoli.c
 VPATH	=	$(SRCDIR)
 
 #--- OBJECT ---#
