@@ -3,7 +3,7 @@ NAME = philo
 
 #--- COMMAND VARIABLES ---#
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -pthread #-fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -pthread #-fsanitize=thread
 RM = rm -f
 AR = ar rcs
 MK = mkdir -p

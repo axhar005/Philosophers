@@ -1,6 +1,7 @@
 #ifndef PHILO_H
 # define PHILO_H
 
+# include <limits.h>
 # include <pthread.h>
 # include <stdbool.h>
 # include <stdio.h>
@@ -60,15 +61,16 @@ t_time					get_time(void);
 void					*routine(void *param);
 void					print_state(size_t philo_id, char *str);
 void					msleep(t_time duration, t_philo *philo);
+long int				ft_atoli(const char *str);
 
-//init
+// init
 
 void					join_philo(void);
 void					create_philo(void);
 void					init_mutex(int action);
 void					init_philo(void);
 
-//checks
+// checks
 
 bool					check_one_death(void);
 bool					check_all_dead(t_philo *philo);

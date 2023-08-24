@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pars.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oboucher <oboucher@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olivierboucher <olivierboucher@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 19:37:37 by olivierbouc       #+#    #+#             */
-/*   Updated: 2023/08/22 15:25:53 by oboucher         ###   ########.fr       */
+/*   Updated: 2023/08/24 09:28:10 by olivierbouc      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ bool	pars(char **av)
 
 	while (av[i])
 	{
-		if (find_filter(av[i], "0123456789"))
+		if (ft_atoli(av[i]) > INT_MAX)
+			return (false);
+		else if (find_filter(av[i], "0123456789"))
 			return (false);
 		if (i == 1)
 			data()->number_of_philo = ft_atoi(av[i]);
