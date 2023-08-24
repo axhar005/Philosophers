@@ -6,7 +6,7 @@
 /*   By: oboucher <oboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 13:14:21 by oboucher          #+#    #+#             */
-/*   Updated: 2023/08/24 15:27:47 by oboucher         ###   ########.fr       */
+/*   Updated: 2023/08/24 16:04:12 by oboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,13 +98,14 @@ int	main(int ac, char **av)
 	{
 		if (pars(ac, av))
 		{
-			init_mutex(INIT);
+			set_mutex(INIT);
 			init_philo();
 			create_philo();
 			join_philo();
+			set_mutex(DEL);
+			return (0);
 		}
 	}
-	else
-		printf("Error: bad arguments\n");
-	return (0);
+	write(2, "Error: bad arguments\n", 21);
+	return (1);
 }

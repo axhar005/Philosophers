@@ -6,7 +6,7 @@
 /*   By: oboucher <oboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 19:37:37 by olivierbouc       #+#    #+#             */
-/*   Updated: 2023/08/24 15:28:52 by oboucher         ###   ########.fr       */
+/*   Updated: 2023/08/24 16:08:15 by oboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,27 @@ int	find_filter(char *str, char *filter)
 	return (0);
 }
 
+static bool	max_min_arg(void)
+{
+	if (data()->number_of_philo > 200)
+		return (false);
+	if (data()->time_to_die < 60)
+		return (false);
+	if (data()->time_to_eat < 60)
+		return (false);
+	if (data()->time_to_sleep < 60)
+		return (false);
+	return (true);
+}
+
 bool	pars(int ac, char **av)
 {
 	int	i;
 
-	i = 1;
+	i = 0;
 	if (ac != 6)
 		data()->max_eat = -1;
-	while (av[i])
+	while (av[++i])
 	{
 		if (ft_atoli(av[i]) > INT_MAX)
 			return (false);
@@ -59,7 +72,8 @@ bool	pars(int ac, char **av)
 			data()->time_to_sleep = ft_atoi(av[i]);
 		else if (i == 5)
 			data()->max_eat = ft_atoi(av[i]);
-		i++;
 	}
+	if (!max_min_arg())
+		return (false);
 	return (true);
 }

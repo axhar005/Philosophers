@@ -6,7 +6,7 @@
 /*   By: oboucher <oboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 13:28:12 by oboucher          #+#    #+#             */
-/*   Updated: 2023/08/24 15:24:57 by oboucher         ###   ########.fr       */
+/*   Updated: 2023/08/24 16:05:05 by oboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	create_philo(void)
 	}
 }
 
-void	init_mutex(int action)
+void	set_mutex(int action)
 {
 	size_t	i;
 
@@ -50,9 +50,7 @@ void	init_mutex(int action)
 	while (i < data()->number_of_philo)
 	{
 		if (action == INIT)
-		{
 			pthread_mutex_init(&data()->philo[i].my.fork, NULL);
-		}
 		else if (action == DEL)
 			pthread_mutex_destroy(&data()->philo[i].my.fork);
 		i++;

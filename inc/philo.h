@@ -6,7 +6,7 @@
 /*   By: oboucher <oboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 15:28:18 by oboucher          #+#    #+#             */
-/*   Updated: 2023/08/24 15:28:20 by oboucher         ###   ########.fr       */
+/*   Updated: 2023/08/24 16:04:29 by oboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int						ft_isdigit(int c);
 
 void					join_philo(void);
 void					create_philo(void);
-void					init_mutex(int action);
+void					set_mutex(int action);
 void					init_philo(void);
 
 // checks
